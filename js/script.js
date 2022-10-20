@@ -17,6 +17,33 @@ jobRole.addEventListener('change', (e) => {
     }
 });
 
+//Adding JS to the T-Shirt Info section
+
+const shirtDesignSelect = document.getElementById('design');
+const shirtColorSelect = document.getElementById('color');
+const colorOptions = shirtColorSelect.children;
+
+//Disables the color choices until a theme is selected
+shirtColorSelect.disabled = true;
+
+//Allows the correct color options to appear for the theme chosen
+shirtDesignSelect.addEventListener('change', (e) => {
+    shirtColorSelect.disabled = false;
+    for (let i = 0; i < colorOptions.length; i++) {
+        const selectedDesign = e.target.value;
+        const shirtTheme = colorOptions[i].getAttribute('data-theme');
+
+        if (selectedDesign === shirtTheme) {
+            colorOptions[i].hidden = false;
+            colorOptions[i].setAttribute('selected', true);
+        }else {
+            colorOptions[i].hidden = true;
+            colorOptions[i].removeAttribute('selected', false);
+        };
+    };
+});
+
+
 
 
 
