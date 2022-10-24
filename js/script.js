@@ -43,6 +43,7 @@ shirtDesignSelect.addEventListener('change', (e) => {
     };
 });
 
+//User can select their activities and find out the total cost
 const registerActivities = document.getElementById('activities');
 let activitiesCost = document.getElementById('activities-cost');
 let totalCost = 0;
@@ -57,4 +58,30 @@ registerActivities.addEventListener('change', (e) => {
     activitiesCost.innerHTML = `Total: $${totalCost}`;
 });
 
+//Payment section
+const selectPayment = document.getElementById('payment');
+const creditCard = document.getElementById('credit-card');
+const paypal = document.getElementById('paypal');
+const bitcoin = document.getElementById('bitcoin');
 
+//Sets Credit Card as default option
+paypal.style.display = 'none';
+bitcoin.style.display = 'none';
+selectPayment.children[1].setAttribute('selected', true);
+
+// Changes the payment information based on which method the user chooses
+selectPayment.addEventListener('change', (e) => {
+    if (e.target.value === 'paypal') {
+        paypal.style.display = '';
+        creditCard.style.display = 'none';
+        bitcoin.style.display = 'none';
+    } else if (e.target.value === 'bitcoin') {
+        paypal.style.display = 'none';
+        creditCard.style.display = 'none';
+        bitcoin.style.display = '';
+    } else {
+        paypal.style.display = 'none';
+        creditCard.style.display = '';
+        bitcoin.style.display = 'none';
+    }
+});
