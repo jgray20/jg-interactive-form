@@ -43,7 +43,18 @@ shirtDesignSelect.addEventListener('change', (e) => {
     };
 });
 
+const registerActivities = document.getElementById('activities');
+let activitiesCost = document.getElementById('activities-cost');
+let totalCost = 0;
 
-
+registerActivities.addEventListener('change', (e) => {
+    const dataCost =  +e.target.getAttribute('data-cost');
+    if (e.target.checked) {
+        totalCost += dataCost;
+    } else {
+        totalCost -= dataCost;
+    }
+    activitiesCost.innerHTML = `Total: $${totalCost}`;
+});
 
 
