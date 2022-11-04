@@ -85,3 +85,107 @@ selectPayment.addEventListener('change', (e) => {
         bitcoin.style.display = 'none';
     }
 });
+
+//Form Validation
+const email = document.getElementById('email');
+const creditCardNumber = document.getElementById('cc-num');
+const zipCode = document.getElementById('zip');
+const cvvCode = document.getElementById('cvv');
+const form = document.querySelector('form');
+
+//Name field validation
+function validateName() {
+    const nameValue = userName.value;
+    const validNameTest = /^\D+ ?(\D+)? \D+$/.test(nameValue);
+    return validNameTest;
+}
+
+//Email validation
+function validateEmail() {
+    const emailValue = email.value;
+    const validEmailTest = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
+    return validEmailTest;
+}
+
+//Makes sure that at least one activity is selected
+function validateRegistration() {
+    const activitiesSelected = totalCost > 0;
+    return activitiesSelected;
+}
+
+//Validate that a CC has 13-16 digits entered
+function validateCard() {
+    const cardNumber = creditCardNumber.value;
+    const validNumber = /^\d{13,16}$/.test(cardNumber);
+    return validNumber;
+}
+
+//Validates a 5 digit zip code
+function validateZip() {
+    const zipValue = zipCode.value;
+    const validZipTest = /^\d{5}$/.test(zipValue);
+    return validZipTest;
+}
+
+//Validates a 3 digit CVV code
+function validateCvv() {
+    const cvvValue = cvvCode.value;
+    const validCvv = /^\d{3}$/.test(cvvValue);
+    return validCvv;
+}
+
+//Instruction for invalid fields
+function invalidField(formInput) {
+    formInput.parentElement.classList.remove('valid');
+    formInput.parentElement.classList.add('not-valid');
+    formInput.parentElement.style.display = 'block';
+}
+
+function validField(formInput) {
+    formInput.parentElement.classList.remove('not-valid');
+    formInput.parentElement.classList.add('valid');
+    formInput.parentElement.style.display = '';
+}
+
+
+
+
+//prevents the form from submitting if there are any errors
+form.addEventListener('submit', (e) => {
+    if ( !validateName() ) {
+        e.preventDefault();
+        invalidField(userName);
+    } else{
+        validField(userName);
+    }
+    if ( !validateEmail() ) {
+        e.preventDefault();
+        invalidField(email);
+    }else{
+        validField(email);
+    }
+    if ( !validateRegistration() ) {
+        e.preventDefault();
+        invalidField(registerActivities);
+    }else{
+        validField(registerActivities);
+    }
+    if (selectPayment.value === 'credit-card' && !validateCard() ){
+         e.preventDefault();
+        invalidField(creditCardNumber);
+    } else{
+        validField(creditCardNumber)
+    }
+    if ( !validateZip() ) {
+        e.preventDefault();
+        invalidField(zipCode);
+    } else {
+        validField(zipCode);
+    }
+    if ( !validateCvv() ) {
+        e.preventDefault();
+        invalidField(cvvCode);
+    } else {
+        validField(cvvCode);
+    }
+});
