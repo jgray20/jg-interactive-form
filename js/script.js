@@ -170,22 +170,25 @@ form.addEventListener('submit', (e) => {
     }else{
         validField(registerActivities);
     }
-    if (selectPayment.value === 'credit-card' && !validateCard() ){
-         e.preventDefault();
-        invalidField(creditCardNumber);
-    } else{
-        validField(creditCardNumber)
+    if (selectPayment.value === 'credit-card') {
+        if ( !validateCard() ){
+            e.preventDefault();
+            invalidField(creditCardNumber);
+        } else {
+            validField(creditCardNumber);
+        }
+        if ( !validateZip() ) {
+            e.preventDefault();
+            invalidField(zipCode);
+        }else {
+            validField(zipCode);
+        }
+        if ( !validateCvv() ) {
+            e.preventDefault();
+            invalidField(cvvCode);
+        } else {
+            validField(cvvCode);
+        }
     }
-    if ( !validateZip() ) {
-        e.preventDefault();
-        invalidField(zipCode);
-    } else {
-        validField(zipCode);
-    }
-    if ( !validateCvv() ) {
-        e.preventDefault();
-        invalidField(cvvCode);
-    } else {
-        validField(cvvCode);
-    }
+    
 });
