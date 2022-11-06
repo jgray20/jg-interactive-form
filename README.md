@@ -1,2 +1,2 @@
-# jg-interactive-form
- Making a form interactive with JS
+# Interactive Form
+This form takes information from its user to register for a conference. The user is prompted to give basic information, select a t-shirt, choose one or more activities during the conference, and select a payment option. Using JavaScript, the form was given more interactive features including disabling/enabling activity choices based on clashing dates and times, disabling/enabling t-shirt colors based on the chosen theme, and real-time validation for the name field. The email field also provides real-time validation along with conditional error messages. 

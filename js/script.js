@@ -18,6 +18,7 @@ const cvvCode = document.getElementById('cvv');
 const form = document.querySelector('form');
 const activityCheckboxes = document.querySelectorAll('#activities-box input[type="checkbox"]');
 
+//Basic Info section
 
 //Highlights the Name input at page load
 userName.focus();
@@ -207,7 +208,7 @@ form.addEventListener('submit', (e) => {
 
 // Accessibility
 
-//adds a more noticeable style to the activity being selected
+// (Activities Section) adds a more noticeable style to the activity being selected
 for ( let i = 0; i < activityCheckboxes.length; i++) {
         activityCheckboxes[i].addEventListener('focus', (e) => {
             activityCheckboxes[i].parentElement.classList.add('focus');
@@ -217,7 +218,7 @@ for ( let i = 0; i < activityCheckboxes.length; i++) {
         });
 };
 
-//Disables activity options with the same time and day as the selected option
+// (Activities Section) Disables activity options with the same time and day as the selected option
 registerActivities.addEventListener('change', (e) => {
     const clicked = e.target;
     const clickedDate = clicked.getAttribute('data-day-and-time');
@@ -238,5 +239,6 @@ registerActivities.addEventListener('change', (e) => {
     }
 });
 
+// Provides real-time validation for the user on the Name and Email inputs
 userName.addEventListener('keyup', validateName);
 email.addEventListener('keyup', validateEmail);
