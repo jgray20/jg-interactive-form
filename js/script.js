@@ -1,11 +1,28 @@
-//Highlights the Name input at page load
 const userName = document.getElementById('name');
+const jobRole = document.getElementById('title');
+const otherJobRole = document.getElementById('other-job-role');
+const shirtDesignSelect = document.getElementById('design');
+const shirtColorSelect = document.getElementById('color');
+const colorOptions = shirtColorSelect.children;
+const registerActivities = document.getElementById('activities');
+let activitiesCost = document.getElementById('activities-cost');
+let totalCost = 0;
+const selectPayment = document.getElementById('payment');
+const creditCard = document.getElementById('credit-card');
+const paypal = document.getElementById('paypal');
+const bitcoin = document.getElementById('bitcoin');
+const email = document.getElementById('email');
+const creditCardNumber = document.getElementById('cc-num');
+const zipCode = document.getElementById('zip');
+const cvvCode = document.getElementById('cvv');
+const form = document.querySelector('form');
+const activityCheckboxes = document.querySelectorAll('#activities-box input[type="checkbox"]');
+
+
+//Highlights the Name input at page load
 userName.focus();
 
-// Hides the text area until Other is selected from dropdown
-const jobRole = document.getElementById('title');
-
-const otherJobRole = document.getElementById('other-job-role');
+// Hides the text area for job role until 'Other' is selected from dropdown
 otherJobRole.style.display = 'none';
 
 jobRole.addEventListener('change', (e) => {
@@ -17,11 +34,7 @@ jobRole.addEventListener('change', (e) => {
     }
 });
 
-//Adding JS to the T-Shirt Info section
-
-const shirtDesignSelect = document.getElementById('design');
-const shirtColorSelect = document.getElementById('color');
-const colorOptions = shirtColorSelect.children;
+//T-Shirt Info section
 
 //Disables the color choices until a theme is selected
 shirtColorSelect.disabled = true;
@@ -43,11 +56,10 @@ shirtDesignSelect.addEventListener('change', (e) => {
     };
 });
 
-//User can select their activities and find out the total cost
-const registerActivities = document.getElementById('activities');
-let activitiesCost = document.getElementById('activities-cost');
-let totalCost = 0;
 
+//Register for Activities section 
+
+//User can select their activities and find out the total cost
 registerActivities.addEventListener('change', (e) => {
     const dataCost =  +e.target.getAttribute('data-cost');
     if (e.target.checked) {
@@ -59,12 +71,8 @@ registerActivities.addEventListener('change', (e) => {
 });
 
 //Payment section
-const selectPayment = document.getElementById('payment');
-const creditCard = document.getElementById('credit-card');
-const paypal = document.getElementById('paypal');
-const bitcoin = document.getElementById('bitcoin');
 
-//Sets Credit Card as default option
+//Sets Credit Card as default payment option
 paypal.style.display = 'none';
 bitcoin.style.display = 'none';
 selectPayment.children[1].setAttribute('selected', true);
@@ -86,24 +94,35 @@ selectPayment.addEventListener('change', (e) => {
     }
 });
 
-//Form Validation
-const email = document.getElementById('email');
-const creditCardNumber = document.getElementById('cc-num');
-const zipCode = document.getElementById('zip');
-const cvvCode = document.getElementById('cvv');
-const form = document.querySelector('form');
+//Form Validation helper functions
 
 //Name field validation
 function validateName() {
     const nameValue = userName.value;
     const validNameTest = /^\D+ ?(\D+)? \D+$/.test(nameValue);
+    if (!validNameTest){
+        invalidField(userName);
+    } else {
+        validField(userName);
+    }
     return validNameTest;
 }
 
 //Email validation
 function validateEmail() {
-    const emailValue = email.value;
+    let emailValue = email.value;
     const validEmailTest = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue);
+    if (!validEmailTest) {
+        if (emailValue === ''){
+            invalidField(email);
+            document.getElementById('email-hint').innerText = "Email address cannot be blank";
+        } else {
+            invalidField(email);
+            document.getElementById('email-hint').innerText = "Email address must be formatted correctly";
+        }
+    } else {
+        validField(email);
+    }
     return validEmailTest;
 }
 
@@ -113,7 +132,7 @@ function validateRegistration() {
     return activitiesSelected;
 }
 
-//Validate that a CC has 13-16 digits entered
+//Validates that a credit card has 13-16 digits entered
 function validateCard() {
     const cardNumber = creditCardNumber.value;
     const validNumber = /^\d{13,16}$/.test(cardNumber);
@@ -136,39 +155,32 @@ function validateCvv() {
 
 //Instruction for invalid fields
 function invalidField(formInput) {
-    formInput.parentElement.classList.remove('valid');
-    formInput.parentElement.classList.add('not-valid');
-    formInput.parentElement.style.display = 'block';
+        formInput.parentElement.classList.remove('valid');
+        formInput.parentElement.classList.add('not-valid');
+        formInput.parentElement.lastElementChild.style.display = 'block';
+
 }
 
+//Instruction for valid fields
 function validField(formInput) {
-    formInput.parentElement.classList.remove('not-valid');
-    formInput.parentElement.classList.add('valid');
-    formInput.parentElement.style.display = '';
+        formInput.parentElement.classList.remove('not-valid');
+        formInput.parentElement.classList.add('valid');
+        formInput.parentElement.lastElementChild.style.display = '';
+    
 }
-
-
-
 
 //prevents the form from submitting if there are any errors
 form.addEventListener('submit', (e) => {
+
     if ( !validateName() ) {
         e.preventDefault();
-        invalidField(userName);
-    } else{
-        validField(userName);
-    }
+    } 
     if ( !validateEmail() ) {
         e.preventDefault();
-        invalidField(email);
-    }else{
-        validField(email);
     }
     if ( !validateRegistration() ) {
         e.preventDefault();
-        invalidField(registerActivities);
-    }else{
-        validField(registerActivities);
+        invalidField(activitiesCost);
     }
     if (selectPayment.value === 'credit-card') {
         if ( !validateCard() ){
@@ -192,3 +204,39 @@ form.addEventListener('submit', (e) => {
     }
     
 });
+
+// Accessibility
+
+//adds a more noticeable style to the activity being selected
+for ( let i = 0; i < activityCheckboxes.length; i++) {
+        activityCheckboxes[i].addEventListener('focus', (e) => {
+            activityCheckboxes[i].parentElement.classList.add('focus');
+        });
+        activityCheckboxes[i].addEventListener('blur', (e) => {
+            activityCheckboxes[i].parentElement.classList.remove('focus');
+        });
+};
+
+//Disables activity options with the same time and day as the selected option
+registerActivities.addEventListener('change', (e) => {
+    const clicked = e.target;
+    const clickedDate = clicked.getAttribute('data-day-and-time');
+    
+    for ( let i = 0; i < activityCheckboxes.length; i++) {
+        const checkboxDate = activityCheckboxes[i].getAttribute('data-day-and-time');
+        if (clickedDate === checkboxDate && clicked !== activityCheckboxes[i]){
+            if (clicked.checked) {
+                activityCheckboxes[i].disabled = true;
+                activityCheckboxes[i].parentElement.classList.add('disabled');
+            } 
+            if(!clicked.checked){
+                activityCheckboxes[i].disabled = false;
+                activityCheckboxes[i].parentElement.classList.remove('disabled');
+            }
+        } 
+        
+    }
+});
+
+userName.addEventListener('keyup', validateName);
+email.addEventListener('keyup', validateEmail);
