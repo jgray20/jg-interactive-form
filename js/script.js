@@ -103,6 +103,7 @@ function validateName() {
     const validNameTest = /^\D+ ?(\D+)? \D+$/.test(nameValue);
     if (!validNameTest){
         invalidField(userName);
+        document.getElementById('name-hint').innerText = "Name field must contain a first and last name";
     } else {
         validField(userName);
     }
