@@ -183,6 +183,8 @@ form.addEventListener('submit', (e) => {
     if ( !validateRegistration() ) {
         e.preventDefault();
         invalidField(activitiesCost);
+    } else {
+        validField(activitiesCost);
     }
     if (selectPayment.value === 'credit-card') {
         if ( !validateCard() ){
